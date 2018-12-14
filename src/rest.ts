@@ -4,10 +4,6 @@ import {Api, IResponseObject, IError} from './api'
 
 import {driver} from './decorators'
 
-export type RecursivePartial<T> = {
-    [P in keyof T]?: RecursivePartial<T[P]>;
-}
-
 @driver(axiosDriver)
 export class RestApi<T_MODEL = any, T_MODEL_LIST = T_MODEL[]> extends Api {
     async create(data: T_MODEL, options?: IOptions): Promise<T_MODEL> {
@@ -52,7 +48,7 @@ export class RestApi<T_MODEL = any, T_MODEL_LIST = T_MODEL[]> extends Api {
         }
     }
 
-    async updateAttributes(id: number | string, data: RecursivePartial<T_MODEL>, options?: IOptions): Promise<T_MODEL> {
+    async updateAttributes(id: number | string, data: DeepPartial<T_MODEL>, options?: IOptions): Promise<T_MODEL> {
         try {
             return await this.patch<T_MODEL>(`${id}`, data, options)
         } catch (error) {
